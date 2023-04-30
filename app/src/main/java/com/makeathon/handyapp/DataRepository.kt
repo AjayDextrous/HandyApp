@@ -6,4 +6,5 @@ import com.makeathon.handyapp.models.Job
 interface DataRepository {
     fun getJobs(): List<Job>
     fun getContacts(): List<Contact>
+    fun getJob(jobId: Int): Job?
 }
