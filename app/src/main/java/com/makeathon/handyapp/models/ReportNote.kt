@@ -8,6 +8,7 @@ class ReportNote (val noteId: Int, val creationTime: Long) {
     var type: NoteType = NoteType.TEXT
     var content: String? = null
     var contentURI: Uri? = null
+    var fileName: String? = null
 
 
     enum class NoteType {

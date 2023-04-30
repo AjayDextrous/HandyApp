@@ -51,10 +51,16 @@ class JobsViewModel(app: Application) : AndroidViewModel(app) {
 
     }
 
-    fun sendImage(fileUri: Uri?, currentTime: Long) {
+    fun sendReportNote(reportNote: ReportNote){
+        currentJob?.reportNotes?.add(reportNote)
+        reportNotesLiveData.value = currentJob?.reportNotes
+    }
+
+    fun sendImage(fileName: String, fileUri: Uri?, currentTime: Long) {
         val reportNote = ReportNote(reportNotesLiveData.value?.size?:0, currentTime).also {
             it.type = ReportNote.NoteType.PHOTO
             it.contentURI = fileUri
+            it.fileName = fileName
             it.sentBy = currentUser
         }
         Log.d("sendImage()", reportNote.toString())

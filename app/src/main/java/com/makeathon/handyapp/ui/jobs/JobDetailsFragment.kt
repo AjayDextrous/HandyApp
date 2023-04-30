@@ -28,6 +28,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.makeathon.handyapp.R
 import com.makeathon.handyapp.databinding.FragmentJobDetailsBinding
+import com.makeathon.handyapp.models.Contact
+import com.makeathon.handyapp.models.ContactType
+import com.makeathon.handyapp.models.ReportNote
 import java.io.File
 import java.io.FileOutputStream
 
@@ -55,6 +58,7 @@ class JobDetailsFragment : Fragment() {
 
         val currentJob = jobsViewModel.currentJob!!
         binding.titleTextView.text = currentJob.jobTitle
+        currentJob.thumbnail?.let { binding.titleImage.setImageResource(it) }
         binding.timeTextView.text = currentJob.time
         binding.navigateCard.setOnClickListener {
             val uri = Uri.parse(currentJob.locationMapsLink)
@@ -116,7 +120,7 @@ class JobDetailsFragment : Fragment() {
             if (result.resultCode == RESULT_OK) {
                 val currentTime = System.currentTimeMillis()
                 val fileUri = FileProvider.getUriForFile(requireContext(), "com.makeathon.fileprovider", photoFile!!)
-                jobsViewModel.sendImage(fileUri, currentTime)
+                jobsViewModel.sendImage(photoFile!!.name, fileUri, currentTime)
             } else {
                 Toast.makeText(requireContext(), "Could Not Capture File!", Toast.LENGTH_SHORT).show()
             }
@@ -133,6 +137,15 @@ class JobDetailsFragment : Fragment() {
             jobsViewModel.sendAudio(audioUri, currentTime)
 
         }
+
+        val boss = Contact(2,"Martha K.", ContactType.BOSS, R.drawable.boss_1,null, "")
+        val reportNote = ReportNote(0, System.currentTimeMillis()).also {
+            it.type = ReportNote.NoteType.TEXT
+            it.content = currentJob.jobDescription
+            it.sentBy = boss
+        }
+
+        jobsViewModel.sendReportNote(reportNote)
 
         return root
     }

@@ -36,6 +36,7 @@ class JobAdapter(private var jobList: List<Job>, private val listener: OnItemCli
             itemBinding.description.text = job.jobDescription
             itemBinding.address.text = job.addressString
             itemBinding.time.text = job.time
+            job.thumbnail?.let { itemBinding.image.setImageResource(it) }
         }
     }
 
